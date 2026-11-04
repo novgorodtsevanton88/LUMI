@@ -37,7 +37,7 @@ export function themeCss(): string {
   return (Object.keys(themes) as ThemeName[])
     .map((t) => {
       const vars = Object.entries(themes[t]).map(([k, v]) => `--${k}:${v};`).join('');
-      return `${t === 'light' ? ':root,' : ''}[data-theme="${t}"]{${vars}}`;
+      return `${t === 'light' ? ':root,' : ''}:root[data-lumi-theme="${t}"]{${vars}}`;
     })
     .join('\n');
 }

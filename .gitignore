@@ -10,3 +10,4 @@ test-results/
 .supabase/
 *.local
 .DS_Store
+dist-preview/

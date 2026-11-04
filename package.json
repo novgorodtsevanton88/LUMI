@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "build:artifact": "vite build --mode preview-artifact",
     "typecheck": "tsc -b",
     "test": "TZ=Europe/Kyiv vitest run",
     "test:watch": "TZ=Europe/Kyiv vitest"
@@ -31,10 +32,12 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.6.2",
+    "fake-indexeddb": "^6.2.7",
     "postcss": "^8.5.32",
     "tailwindcss": "^3.4.19",
     "typescript": "5.9",
     "vite": "^6.4.5",
+    "vite-plugin-singlefile": "^2.3.4",
     "vitest": "^3.2.7"
   }
 }

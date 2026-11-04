@@ -5,6 +5,6 @@
 html, body { background: var(--bg); color: var(--text-primary); }
 body { font-family: theme('fontFamily.sans'); -webkit-font-smoothing: antialiased; }
 .glass { background: var(--surface); border: 1px solid var(--surface-border); backdrop-filter: blur(24px) saturate(160%); }
-[data-theme='night'] .glass { backdrop-filter: none; }
-@supports not (backdrop-filter: blur(1px)) { .glass { background: rgb(255 255 255); } [data-theme='dark'] .glass { background: #1A2033; } }
+[data-lumi-theme='night'] .glass { backdrop-filter: none; }
+@supports not (backdrop-filter: blur(1px)) { .glass { background: rgb(255 255 255); } [data-lumi-theme='dark'] .glass { background: #1A2033; } }
 @media (prefers-reduced-transparency: reduce) { .glass { backdrop-filter: none; } }
