@@ -49,6 +49,7 @@ export function formatAge(a: Age): string {
   const y = (n: number) => `${n} ${plural(n, 'рік', 'роки', 'років')}`;
   const mo = (n: number) => `${n} ${plural(n, 'місяць', 'місяці', 'місяців')}`;
   const d = (n: number) => `${n} ${plural(n, 'день', 'дні', 'днів')}`;
+  if (a.totalDays === 0) return 'перший день';
   if (a.totalDays < 14) return d(a.totalDays);
   if (a.totalMonths < 1) return `${a.totalWeeks} ${plural(a.totalWeeks, 'тиждень', 'тижні', 'тижнів')}`;
   if (a.years === 0) return a.days ? `${mo(a.months)} ${d(a.days)}` : mo(a.months);

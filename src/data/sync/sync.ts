@@ -1,5 +1,6 @@
 import type { LumiDb, OutboxEntry, SyncTable } from '../db';
 import type { SyncTransport } from './transport';
+import { pushMedia } from './media';
 
 export const SYNC_TABLES: SyncTable[] = ['children', 'sleep_sessions'];
 const PAGE = 500;
@@ -65,6 +66,7 @@ export interface SyncResult { pushed: number; pulled: number; at: string }
 
 /** Повний цикл: спершу push, потім pull. */
 export async function syncOnce(db: LumiDb, t: SyncTransport): Promise<SyncResult> {
+  await pushMedia(db, t);
   const pushed = await push(db, t);
   const pulled = await pull(db, t);
   const at = new Date().toISOString();

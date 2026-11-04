@@ -6,6 +6,7 @@ export class MemoryServer {
   seq = 0;
   tables: { [K in SyncTable]: Map<string, RowByTable[K]> } = { children: new Map(), sleep_sessions: new Map() };
   failNext = false;
+  files = new Map<string, Blob>();
 
   transport(): SyncTransport {
     return {
@@ -23,6 +24,18 @@ export class MemoryServer {
           .filter((r) => r.server_seq > since)
           .sort((a, b) => a.server_seq - b.server_seq)
           .slice(0, limit),
+      media: {
+        upload: async (path, blob) => {
+          if (this.failNext) { this.failNext = false; throw new Error('network down'); }
+          this.files.set(path, blob);
+        },
+        remove: async (path) => { this.files.delete(path); },
+        download: async (path) => {
+          const f = this.files.get(path);
+          if (!f) throw new Error('not found');
+          return f;
+        },
+      },
     };
   }
 }

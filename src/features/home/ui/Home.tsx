@@ -8,6 +8,7 @@ import { deleteSleep, startSleep, stopSleep } from '@/features/sleep/service';
 import { sleepErrorText } from '@/features/sleep/ui/errors';
 import { SleepButton } from '@/features/sleep/ui/SleepButton';
 import { ManualSleepSheet } from '@/features/sleep/ui/ManualSleepSheet';
+import { ChildSwitcher } from '@/features/children/ui/ChildSwitcher';
 import { GlassCard } from '@/ui/primitives/GlassCard';
 import { Segmented } from '@/ui/primitives/Segmented';
 import { SoonBadge } from '@/ui/primitives/PreviewBadge';
@@ -42,8 +43,8 @@ export function Home({ child, sessions }: { child: ChildRow; sessions: SleepSess
     <div className="flex flex-col gap-3">
       <header className="mb-3">
         <p className="text-subhead text-text-secondary">{format(now, 'd.MM.yyyy')}</p>
-        <h1 className="text-large-title">{child.name}</h1>
-        <p className="text-subhead text-text-secondary">
+        <h1><ChildSwitcher child={child} /></h1>
+        <p className="mt-1 text-subhead text-text-secondary">
           {formatAge(age)}{corrected && ` · скоригований ${formatAge(corrected)}`}
         </p>
       </header>

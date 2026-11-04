@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { CloudOff, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ChevronRight, CloudOff, Plus } from 'lucide-react';
+import { ChildAvatar } from '@/features/children/ui/ChildAvatar';
 import { db, type ChildRow } from '@/data/db';
 import { flushBeforeSignOut, syncAvailable } from '@/data/sync/runner';
 import { wipeLocal } from '@/data/session';
 import { signOut } from '@/platform/auth';
 import { useSession } from '@/app/session';
 import { useUi, type ThemePref } from '@/app/store';
-import { Onboarding } from '@/features/onboarding/ui/Onboarding';
 import { GlassCard } from '@/ui/primitives/GlassCard';
 import { Segmented } from '@/ui/primitives/Segmented';
 import { Button } from '@/ui/primitives/Button';
@@ -17,7 +18,6 @@ export function Settings({ children }: { children: ChildRow[] }) {
   const { themePref, nightAuto, activeChildId, set } = useUi();
   const pending = useLiveQuery(() => db().outbox.count(), []) ?? 0;
   const lastSync = useLiveQuery(() => db().meta.get('last_sync_at'), [])?.value as string | undefined;
-  const [adding, setAdding] = useState(false);
   const [wipe, setWipe] = useState(false);
   const session = useSession((s) => s.session);
   const [leaving, setLeaving] = useState<null | 'checking' | number>(null);
@@ -37,19 +37,20 @@ export function Settings({ children }: { children: ChildRow[] }) {
     <div className="flex flex-col gap-3">
       <h1 className="mb-3 text-large-title">Налаштування</h1>
 
-      <GlassCard className="flex flex-col gap-3">
+      <GlassCard className="flex flex-col gap-2">
         <h2 className="text-title-2">Діти</h2>
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col">
           {children.map((c) => (
             <li key={c.id}>
-              <button onClick={() => set({ activeChildId: c.id })} aria-pressed={c.id === activeChildId}
-                className="flex min-h-11 w-full items-center justify-between rounded-control px-3 text-left text-headline hover:bg-surface-border">
-                {c.name}{c.id === activeChildId && <Check size={18} className="text-accent" aria-label="Активна" />}
-              </button>
+              <Link to={`/children/${c.id}`} className="flex min-h-14 items-center gap-3 rounded-control px-2 text-headline hover:bg-surface-border">
+                <ChildAvatar child={c} size={40} /><span className="flex-1 truncate">{c.name}</span>
+                {c.id === activeChildId && <span className="text-footnote text-text-secondary">активна</span>}
+                <ChevronRight size={18} className="text-text-tertiary" aria-hidden />
+              </Link>
             </li>
           ))}
         </ul>
-        {adding ? <Onboarding compact onDone={() => setAdding(false)} /> : <Button variant="secondary" onClick={() => setAdding(true)}>Додати дитину</Button>}
+        <Link to="/children/new" className="flex min-h-11 items-center gap-2 px-2 text-headline text-accent"><Plus size={20} aria-hidden />Додати дитину</Link>
       </GlassCard>
 
       <GlassCard className="flex flex-col gap-3">

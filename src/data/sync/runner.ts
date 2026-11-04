@@ -4,6 +4,9 @@ import { supabaseTransport } from './supabaseTransport';
 import { SYNC_TABLES, syncOnce } from './sync';
 
 export const syncAvailable = supabase !== null;
+
+/** Транспорт для дозавантаження фото (null — локальний режим). */
+export const mediaTransport = supabase ? supabaseTransport(supabase) : null;
 let running = false;
 let again = false;
 

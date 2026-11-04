@@ -18,7 +18,7 @@ export async function bindLocalDataToUser(db: LumiDb, userId: string): Promise<'
 }
 
 export async function wipeLocal(db: LumiDb): Promise<void> {
-  await db.transaction('rw', [db.children, db.sleep_sessions, db.outbox, db.meta], async () => {
-    await Promise.all([db.children.clear(), db.sleep_sessions.clear(), db.outbox.clear(), db.meta.clear()]);
+  await db.transaction('rw', [db.children, db.sleep_sessions, db.outbox, db.meta, db.media], async () => {
+    await Promise.all([db.children.clear(), db.sleep_sessions.clear(), db.outbox.clear(), db.meta.clear(), db.media.clear()]);
   });
 }

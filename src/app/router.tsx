@@ -4,6 +4,7 @@ import { RedirectIfSignedIn, RequireAuth, RequireChild } from './guards';
 import { HomeRoute } from '@/features/home/ui/HomeRoute';
 import { SettingsRoute } from '@/features/settings/ui/SettingsRoute';
 import { OnboardingRoute } from '@/features/onboarding/ui/OnboardingRoute';
+import { ChildProfileRoute, NewChildRoute } from '@/features/children/ui/ChildProfile';
 import { InviteLanding, ResetPassword, SignIn, SignUp, UpdatePassword } from '@/features/auth/ui/AuthScreens';
 
 const routes: RouteObject[] = [
@@ -18,6 +19,8 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <HomeRoute /> },
       { path: 'settings', element: <SettingsRoute /> },
+      { path: 'children/new', element: <NewChildRoute /> },
+      { path: 'children/:id', element: <ChildProfileRoute /> },
     ],
   },
   { path: '*', element: <RequireAuth><RequireChild><AppShell /></RequireChild></RequireAuth>, children: [{ path: '*', element: <HomeRoute /> }] },
