@@ -1,7 +1,10 @@
 import type { Config } from 'tailwindcss';
 import { themes } from './src/ui/tokens';
 
-const colors = Object.fromEntries(Object.keys(themes.light).map((k) => [k, `var(--${k})`]));
+// color-mix дозволяє модифікатори прозорості (bg-sleep/20) для CSS-змінних з hex
+const colors = Object.fromEntries(
+  Object.keys(themes.light).map((k) => [k, `color-mix(in srgb, var(--${k}) calc(<alpha-value> * 100%), transparent)`]),
+);
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],

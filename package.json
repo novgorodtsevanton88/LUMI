@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "build:artifact": "vite build --mode preview-artifact",
+    "build:artifact": "vite build --mode preview-artifact && node scripts/artifact-fragment.mjs",
     "typecheck": "tsc -b",
     "test": "TZ=Europe/Kyiv vitest run",
     "test:watch": "TZ=Europe/Kyiv vitest"
@@ -37,7 +37,12 @@
     "tailwindcss": "^3.4.19",
     "typescript": "5.9",
     "vite": "^6.4.5",
+    "vite-plugin-pwa": "^2.0.0",
     "vite-plugin-singlefile": "^2.3.4",
-    "vitest": "^3.2.7"
+    "vitest": "^3.2.7",
+    "workbox-core": "^7.4.1",
+    "workbox-precaching": "^7.4.1",
+    "workbox-routing": "^7.4.1",
+    "workbox-strategies": "^7.4.1"
   }
 }

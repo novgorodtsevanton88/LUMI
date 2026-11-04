@@ -8,7 +8,7 @@
 ## Статус
 
 - Фаза 0 — завершена і погоджена власником.
-- Фаза 1 — у роботі. Готово: каркас + токени; `domain/age`, `domain/sleep/sessions`, `nightMode` з тестами; Dexie (`src/data/db.ts`) + outbox + sync push/pull із транспортом Supabase і in-memory сервером для тестів; онбординг дитини, Головна з таймером сну, ручне додавання/видалення, теми й нічний режим, налаштування. Прев'ю: `npm run build:artifact` → `dist-preview/index.html`. Далі: Auth і захищені маршрути, сімейний доступ, PWA.
+- Фаза 1 — у роботі. Готово: каркас + токени; `domain/age`, `domain/sleep/sessions`, `nightMode` з тестами; Dexie + outbox + sync push/pull (Supabase-транспорт, Realtime лише як сигнал, in-memory сервер для тестів); Auth (вхід, реєстрація, відновлення і зміна пароля, вихід з дочищенням локальних даних), захищені маршрути (react-router), `/invite/:token` зберігає токен; онбординг, Головна з таймером сну, нічний режим, налаштування; PWA (injectManifest `src/app/sw.ts`, маніфест, іконки й iOS splash — `node scripts/generate-icons.cjs`, плашка оновлення). Без `VITE_SUPABASE_*` застосунок працює в локальному режимі без входу. Прев'ю: `npm run build:artifact` → `dist-preview/artifact.html`. Далі: перевірка з реальним Supabase, профіль дитини (редагування, фото, точний час народження), e2e Playwright, звіт про фазу.
 - `supabase/migrations/0001_lumi_schema.sql` — повна схема (24 таблиці, RLS, тригери синхронізації, storage-бакет). Перевірена на PostgreSQL 16 із заглушками Supabase.
 - `supabase/tests/rls_scenarios.sql` — 26 сценаріїв доступу та синхронізації; `local_supabase_stubs.sql` — заглушки `auth`/`storage` для локального прогону. Перед Фазою 3 перенести в pgTAP (`supabase test db`).
 

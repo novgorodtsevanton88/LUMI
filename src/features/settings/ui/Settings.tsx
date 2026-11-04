@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { CloudOff, Check } from 'lucide-react';
 import { db, type ChildRow } from '@/data/db';
-import { syncAvailable } from '@/data/sync/runner';
+import { flushBeforeSignOut, syncAvailable } from '@/data/sync/runner';
+import { wipeLocal } from '@/data/session';
+import { signOut } from '@/platform/auth';
+import { useSession } from '@/app/session';
 import { useUi, type ThemePref } from '@/app/store';
 import { Onboarding } from '@/features/onboarding/ui/Onboarding';
 import { GlassCard } from '@/ui/primitives/GlassCard';
@@ -16,6 +19,19 @@ export function Settings({ children }: { children: ChildRow[] }) {
   const lastSync = useLiveQuery(() => db().meta.get('last_sync_at'), [])?.value as string | undefined;
   const [adding, setAdding] = useState(false);
   const [wipe, setWipe] = useState(false);
+  const session = useSession((s) => s.session);
+  const [leaving, setLeaving] = useState<null | 'checking' | number>(null);
+
+  async function startSignOut() {
+    setLeaving('checking');
+    const left = await flushBeforeSignOut();
+    if (left === 0) await finishSignOut(); else setLeaving(left);
+  }
+  async function finishSignOut() {
+    await signOut();
+    await wipeLocal(db()); // на спільному пристрої дані дитини не залишаються після виходу
+    setLeaving(null);
+  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -45,6 +61,22 @@ export function Settings({ children }: { children: ChildRow[] }) {
           <input id="night-auto" type="checkbox" className="h-6 w-6 accent-[var(--accent)]" checked={nightAuto} onChange={(e) => set({ nightAuto: e.target.checked })} />
         </label>
       </GlassCard>
+
+      {session && (
+        <GlassCard className="flex flex-col gap-3">
+          <h2 className="text-title-2">Акаунт</h2>
+          <p className="text-subhead text-text-secondary">{session.user.email}</p>
+          {typeof leaving === 'number' ? (
+            <div className="flex flex-col gap-3">
+              <p className="text-subhead">Ще не надіслано змін: {leaving}. Якщо вийти зараз, вони зникнуть з цього пристрою. Підключіться до інтернету, щоб зберегти їх.</p>
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setLeaving(null)}>Залишитися</Button>
+                <Button variant="danger" className="flex-1" onClick={finishSignOut}>Вийти все одно</Button>
+              </div>
+            </div>
+          ) : <Button variant="secondary" disabled={leaving === 'checking'} onClick={startSignOut}>{leaving === 'checking' ? 'Надсилаємо зміни…' : 'Вийти'}</Button>}
+        </GlassCard>
+      )}
 
       <GlassCard className="flex flex-col gap-2">
         <h2 className="text-title-2">Синхронізація</h2>
