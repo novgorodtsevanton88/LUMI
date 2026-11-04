@@ -7,7 +7,8 @@
 
 ## Статус
 
-- Фаза 0 — завершена. Чекає на підтвердження власника перед Фазою 1.
+- Фаза 0 — завершена і погоджена власником.
+- Фаза 1 — у роботі. Готово: каркас Vite/TS strict/Tailwind + токени (`src/ui/tokens.ts`), `domain/age`, `domain/sleep/sessions` з тестами (`npm test`, TZ=Europe/Kyiv). Далі: Dexie + outbox + sync.
 - `supabase/migrations/0001_lumi_schema.sql` — повна схема (24 таблиці, RLS, тригери синхронізації, storage-бакет). Перевірена на PostgreSQL 16 із заглушками Supabase.
 - `supabase/tests/rls_scenarios.sql` — 26 сценаріїв доступу та синхронізації; `local_supabase_stubs.sql` — заглушки `auth`/`storage` для локального прогону. Перед Фазою 3 перенести в pgTAP (`supabase test db`).
 

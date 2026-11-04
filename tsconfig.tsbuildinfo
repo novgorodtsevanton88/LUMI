@@ -1,0 +1,1 @@
+{"root":["./src/main.tsx","./src/app/App.tsx","./src/domain/age/age.test.ts","./src/domain/age/age.ts","./src/domain/sleep/sessions.test.ts","./src/domain/sleep/sessions.ts","./src/ui/tokens.ts","./src/ui/primitives/GlassCard.tsx","./vite.config.ts","./tailwind.config.ts"],"version":"5.9.3"}
